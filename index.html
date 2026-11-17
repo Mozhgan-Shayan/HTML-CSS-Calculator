@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculator</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="calculator">
+        <h2>Calculator</h2>
+        <input type="text" id="display" readonly>
+        <table>
+            <tr>
+                <td><button id="clear" onclick="clearDisplay()">C</button></td>
+                <td><button onclick="addValue('/')">/</button></td>
+                <td><button onclick="addValue('*')">*</button></td>
+                <td><button  onclick="deleteLast()">⌫</button></td>
+            </tr>
+            <tr>
+                <td><button onclick="addValue('7')">7</button></td>
+                <td><button onclick="addValue('8')">8</button></td>
+                <td><button onclick="addValue('9')">9</button></td>
+                <td><button onclick="addValue('-')">-</button></td>
+            </tr>
+            <tr>
+                <td><button onclick="addValue('4')">4</button></td>
+                <td><button onclick="addValue('5')">5</button></td>
+                <td><button onclick="addValue('6')">6</button></td>
+                <td><button onclick="addValue('+')">+</button></td>
+            </tr>
+            <tr>
+                <td><button onclick="addValue('1')">1</button></td>
+                <td><button onclick="addValue('2')">2</button></td>
+                <td><button onclick="addValue('3')">3</button></td>
+                <td rowspan="2"><button id="equal" onclick="calculate()">=</button></td>
+            </tr>
+            <tr>
+                <td colspan="2"><button onclick="addValue('0')">0</button></td>
+                <td><button onclick="addValue('.')">.</button></td>
+                
+            </tr>
+        </table>
+
+    </div>
+     <script>
+        const display = document.getElementById("display");
+
+        function addValue(value) {
+            display.value += value;
+        }
+
+        function clearDisplay() {
+            display.value = "";
+        }
+
+        function deleteLast() {
+            display.value = display.value.slice(0, -1);
+        }
+
+        function calculate() {
+            try {
+                if (!/^[0-9+\-*/.() ]+$/.test(display.value)) {
+                    throw new Error("Invalid");
+                }
+
+                const result = Function(
+                    '"use strict"; return (' + display.value + ')'
+                )();
+
+                if (!Number.isFinite(result)) {
+                    throw new Error("Invalid");
+                }
+
+                display.value = result;
+            } catch {
+                display.value = "Error";
+            }
+        }
+    </script>
+</body>
+</html>
